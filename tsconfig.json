@@ -1,3 +1,13 @@
 {
+  "compilerOptions": {
+    "paths": {
+      "*": [
+        // "./src/*",
+        "./*.android.tsx",
+        "./*.ios.tsx"
+      ]
+    }
+  },
+  "include": ["src/**/*", "index.d.ts"],
   "extends": "@react-native/typescript-config/tsconfig.json"
 }
