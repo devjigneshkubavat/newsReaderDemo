@@ -10,4 +10,5 @@ export type AppStackParamList = {
   HomeScreen: undefined;
   Bookmarks: undefined;
   ArticleDetailScreen: {article: NewsArticle};
+  DummyScreen: undefined;
 };

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Image,
   Linking,
@@ -7,14 +8,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import moment from 'moment';
+
+import {AppStackParamList} from '../interface/Navigation.interface';
 import {fontSize, hp, wp} from '../helper/utils';
 import {SVGConst} from '../helper/svgConstansts';
-import {goBack} from '../helper/Navigation';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AppStackParamList} from '../interface/Navigation.interface';
-import moment from 'moment';
+import {useNavigation} from '@react-navigation/native';
 
 type ArticleDetailScreenProps = NativeStackScreenProps<
   AppStackParamList,
@@ -22,52 +22,59 @@ type ArticleDetailScreenProps = NativeStackScreenProps<
 >;
 
 const ArticleDetailScreen: React.FC<ArticleDetailScreenProps> = ({route}) => {
-  const article = route.params.article;
+  const article = route.params?.article;
+  const navigation = useNavigation();
 
   const onLinkPress = () => {
-    Linking.openURL(article.url);
+    if (article?.url) {
+      Linking.openURL(article?.url);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView
         bounces={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: hp(5)}}>
-        <Pressable style={styles.header} onPress={goBack}>
+        <Pressable style={styles.header} onPress={() => navigation.goBack()}>
           <SVGConst.Back height={hp(3)} width={hp(3)} />
           <Text style={styles.backTitle}>Back to Home</Text>
         </Pressable>
-        <Image
-          source={{uri: article?.urlToImage ?? ''}}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        {article?.urlToImage && (
+          <Image
+            source={{uri: article?.urlToImage}}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        )}
         <View style={styles.headerRow}>
-          <Text style={styles.title}>{article.title}</Text>
+          <Text style={styles.title}>{article?.title ?? ''}</Text>
           <SVGConst.BookmarkFilled height={hp(3)} width={hp(3)} />
         </View>
 
-        <View style={{flexDirection: 'row', gap: wp(2), alignItems: 'center'}}>
+        <View style={styles.authorContainer}>
           <Text style={styles.authorTag}>Author</Text>
-          <Text style={styles.authorName}>{article?.author}</Text>
+          <Text style={styles.authorName}>{article?.author ?? ''}</Text>
         </View>
         <View style={styles.categoryTag}>
           <Text style={styles.categoryText}>
-            {moment(article?.publishedAt).format('DD MMM, YYYY')}
+            {article?.publishedAt
+              ? moment(article?.publishedAt).format('DD MMM, YYYY')
+              : '-'}
           </Text>
         </View>
 
         {/* Description */}
         <Text style={styles.descTitle}>Description</Text>
-        <Text style={styles.descText}>{article.description}</Text>
+        <Text style={styles.descText}>{article?.description ?? '-'}</Text>
 
         <Text style={styles.descTitle}>URL</Text>
         <Pressable onPress={onLinkPress}>
-          <Text style={styles.urlText}>{article.url}</Text>
+          <Text style={styles.urlText}>{article?.url}</Text>
         </Pressable>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: wp(2),
-    marginTop: hp(1),
+    marginTop: hp(2),
   },
   backTitle: {
     fontSize: fontSize(16),
@@ -146,5 +153,10 @@ const styles = StyleSheet.create({
     color: 'green',
     marginVertical: 6,
     flex: 1,
+  },
+  authorContainer: {
+    flexDirection: 'row',
+    gap: wp(2),
+    alignItems: 'center',
   },
 });

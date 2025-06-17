@@ -17,7 +17,6 @@ export const makeAPIRequest = ({
       params: params,
       baseURL: config.BASE_URL,
     };
-    console.log('options ::: ', options);
 
     axios(options)
       .then((response: any) => {

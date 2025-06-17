@@ -13,8 +13,6 @@ export const getAllNews = (request: any) => async (dispatch: AppDispatch) => {
       if (request?.onSuccess) request?.onSuccess(response?.data?.articles);
     })
     .catch(err => {
-      console.log('error of getnews ::: ', err);
-
       if (request?.onFail) request?.onFail(err);
     });
 };

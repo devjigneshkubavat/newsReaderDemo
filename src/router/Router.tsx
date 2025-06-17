@@ -1,11 +1,11 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {AppStackParamList} from '../interface/Navigation.interface';
 import {NavigationContainer} from '@react-navigation/native';
 import {navigationRef} from '../helper/Navigation';
-import HomeScreen from '../screens/HomeScreen';
-import Favourites from '../screens/Bookmarks';
+import {AppStackParamList} from '../interface/Navigation.interface';
+
 import {BottomStack} from './BottomTabBar';
 import ArticleDetailScreen from '../screens/ArticleDetailScreen';
+import DummyScreen from '../screens/DummyScreen';
 
 const AppStack = createNativeStackNavigator<AppStackParamList>();
 
@@ -16,12 +16,14 @@ const Router = () => {
         initialRouteName="BottomTab"
         screenOptions={{
           headerShown: false,
+          animation: 'none',
         }}>
-        <AppStack.Screen name={'BottomTab'} component={BottomStack} />
+        <AppStack.Screen name="BottomTab" component={BottomStack} />
         <AppStack.Screen
-          name={'ArticleDetailScreen'}
+          name="ArticleDetailScreen"
           component={ArticleDetailScreen}
         />
+        <AppStack.Screen name="DummyScreen" component={DummyScreen} />
       </AppStack.Navigator>
     </NavigationContainer>
   );

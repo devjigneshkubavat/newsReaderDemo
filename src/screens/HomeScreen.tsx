@@ -1,16 +1,18 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Header from '../components/common/Header';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../store/store';
-import {getAllNews} from '../apis/newsAPI';
-import {hp} from '../helper/utils';
-import {toggleBookmark} from '../store/newsSlice';
-import {navigate} from '../helper/Navigation';
-import config from '../helper/config';
-import {NewsArticle} from '../types/newsTypes';
+import {FlatList, StyleSheet, Text, View, SafeAreaView} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import moment from 'moment';
+
 import NewsListItem from '../components/home/NewsListItem';
+import {AppDispatch, RootState} from '../store/store';
+import {useDispatch, useSelector} from 'react-redux';
+import {toggleBookmark} from '../store/newsSlice';
+import Header from '../components/common/Header';
+import {NewsArticle} from '../types/newsTypes';
+import {getAllNews} from '../apis/newsAPI';
+import config from '../helper/config';
+import {hp} from '../helper/utils';
+import {navigate} from '../helper/Navigation';
 
 type HomeScreenProps = {};
 
@@ -25,7 +27,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
     const request = {
       params: {
         // from: moment().format('YYYY-MM-DD'),
-        from: '2025-05-16',
+        from: '2025-05-17',
         sortBy: 'publishedAt',
         apiKey: config.NEW_API_KEY,
       },
@@ -60,7 +62,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
     navigate('ArticleDetailScreen', {article: item});
   };
 
-  const renderItem = ({item, index}: {item: NewsArticle; index: number}) => {
+  const renderItem = ({item}: {item: NewsArticle; index: number}) => {
     return (
       <NewsListItem
         article={item}

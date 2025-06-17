@@ -65,7 +65,7 @@ function BottomTabs({props}: any) {
   );
 }
 
-export default BottomTabs;
+export default React.memo(BottomTabs);
 
 const styles = StyleSheet.create({
   wrapper: {

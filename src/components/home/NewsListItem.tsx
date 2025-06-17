@@ -46,15 +46,15 @@ const NewsListItem: React.FC<NewsListItemProps> = ({
     onLikePress(article.id);
   };
 
-  // console.log('article.isLiked ::: ', article.isLiked);
-
   return (
-    <Pressable style={styles.card} onPress={() => onPress(article)}>
-      <Image
-        source={{uri: article?.urlToImage ?? ''}}
-        style={styles.image}
-        resizeMode="contain"
-      />
+    <TouchableOpacity style={styles.card} onPress={() => onPress(article)}>
+      {article?.urlToImage && (
+        <Image
+          source={{uri: article?.urlToImage}}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      )}
       <TouchableOpacity style={styles.heartIcon} onPress={handleLikeToggle}>
         <Animated.View style={{transform: [{scale: scaleAnim}]}}>
           {article.isLiked ? (
@@ -94,7 +94,7 @@ const NewsListItem: React.FC<NewsListItemProps> = ({
           </View>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
